@@ -1,21 +1,37 @@
 {
   "name": "chatgpt-desktop-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/main.js",
   "type": "module",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --linux snap"
+    "dev": "electron .",
+    "dist": "electron-builder --linux deb",
+    "build": "npm run dist",
+    "clean": "rm -rf dist build/icons node_modules package-lock.json",
+    "clean:dist": "rm -rf dist",
+    "rebuild": "npm run clean:dist && npm run dist",
+    "install:deb": "sudo apt install -y ./dist/chatgpt-desktop-client_*_amd64.deb",
+    "uninstall": "sudo apt remove -y chatgpt-desktop-client",
+    "reinstall": "sudo apt remove -y chatgpt-desktop-client || true && npm run install:deb",
+    "build-and-install": "npm run dist && npm run reinstall",
+    "test": "npm start"
   },
   "build": {
     "appId": "com.example.chatgptdesktopclient",
+    "productName": "ChatGPT Desktop",
+    "publish": null,
     "linux": {
-      "target": "snap",
-      "icon": "assets/icon.png",
-      "category": "Utility"
+      "target": "deb",
+      "icon": "build/icons",
+      "category": "Network",
+      "maintainer": "Tanmoy Ganguly",
+      "vendor": "ChatGPT Desktop",
+      "synopsis": "Desktop client for ChatGPT",
+      "description": "A simple and efficient desktop client for ChatGPT, built with Electron. Provides a native desktop experience for interacting with OpenAI's ChatGPT."
     }
   },
-  "repository": "https://github.com/xanmoy/chatgpt-desktop-client.git",
+  "repository": "https://github.com/git-aniket/chatgpt-desktop-client.git",
   "keywords": [
     "Electron",
     "ChatGPT",
@@ -23,14 +39,17 @@
     "Linux",
     "desktopApplication"
   ],
-  "author": "Tanmoy Ganguly",
+  "author": "Tanmoy Ganguly (Original Author), Aniket Mazumder (Contributor)",
+  "contributors": [
+    {
+      "name": "Aniket Mazumder",
+      "email": "mazumder_aniket@outlook.com"
+    }
+  ],
   "license": "ISC",
   "description": "A simple and efficient desktop client for ChatGPT.",
   "devDependencies": {
-    "electron": "^33.2.0",
+    "electron": "^39.2.6",
     "electron-builder": "^25.1.8"
-  },
-  "dependencies": {
-    "electron-context-menu": "^4.0.4"
   }
 }
